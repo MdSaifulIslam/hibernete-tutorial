@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.springdemo.hibernet.demo.entity.Student;
 
-public class CreateStudentDemo {
+public class DeleteStudentDemo {
 
 	public static void main(String[] args) {
 
@@ -14,14 +14,24 @@ public class CreateStudentDemo {
 				.buildSessionFactory();
 
 		try {
+
+			int studentId = 1;
+
 			Session session = factory.getCurrentSession();
-
-			Student tempStudent = new Student("Asif", "Saharior", "asif@gmail.com");
-
 			session.beginTransaction();
-			
-			session.save(tempStudent);
-			
+
+			Student theStudent = session.get(Student.class, studentId);
+			//delete student
+			System.out.println("Delete ID =1");
+			session.delete(theStudent);
+
+			session.getTransaction().commit();
+			// delete where id =2
+			session = factory.getCurrentSession();
+			session.beginTransaction();
+
+			session.createQuery("delete Student where id = 2").executeUpdate();
+
 			session.getTransaction().commit();
 
 		} catch (Exception e) {

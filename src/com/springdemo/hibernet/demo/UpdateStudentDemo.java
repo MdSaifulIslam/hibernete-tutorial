@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.springdemo.hibernet.demo.entity.Student;
 
-public class CreateStudentDemo {
+public class UpdateStudentDemo {
 
 	public static void main(String[] args) {
 
@@ -14,14 +14,23 @@ public class CreateStudentDemo {
 				.buildSessionFactory();
 
 		try {
+
+			int studentId = 1;
+
 			Session session = factory.getCurrentSession();
-
-			Student tempStudent = new Student("Asif", "Saharior", "asif@gmail.com");
-
 			session.beginTransaction();
-			
-			session.save(tempStudent);
-			
+
+			Student theStudent = session.get(Student.class, studentId);
+
+			theStudent.setFirstName("Updated Name");
+
+			session.getTransaction().commit();
+			// Update all...
+			session = factory.getCurrentSession();
+			session.beginTransaction();
+
+			session.createQuery("update Student set email = 'updated-email@update.com'").executeUpdate();
+
 			session.getTransaction().commit();
 
 		} catch (Exception e) {
